@@ -5,8 +5,8 @@ import json
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def index_page():
+    return "Welcome to Zach's todo list api homepage!"
 
 @app.route('/item/new', methods=['POST'])
 def add_item():
