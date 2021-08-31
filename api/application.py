@@ -20,6 +20,22 @@ item_model = app.model(
     },
 )
 
+item_with_status_model = app.model(
+    "Item w/ Status Model",
+    {
+        "item": fields.String(
+            required=True,
+            description="Name of the item/todo task",
+            help="Name cannot be blank.",
+        ),
+        "status": fields.String(
+            required=True,
+            description="Status of the item/todo task the only accepted values are: not started, in progress, and completed",
+            help="Status cannot be blank.",
+        )
+    },
+)
+
 
 @item_name_space.route("/new")
 class New_Item(Resource):
@@ -93,9 +109,11 @@ class Item_Status(Resource):
         return response
 
 
-@item_name_space.route("/update", methods=["PUT"])
+@item_name_space.route("/update")
 class Update_Item(Resource):
-    def update_status(self):
+    
+    @app.expect(item_with_status_model)
+    def put(self):
         # Get item from the POST body
         req_data = request.get_json()
         item = req_data["item"]
