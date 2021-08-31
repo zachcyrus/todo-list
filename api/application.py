@@ -10,11 +10,6 @@ app = Api(flask_app)
 item_name_space = app.namespace('items', description='Route endpoints for items')
 
 
-@app.route('/')
-class Index_Page(Resource):
-    def get(self):
-        return "Welcome to Zach's todo list api homepage!"
-
 @item_name_space.route('/new', methods=['POST'])
 class New_Item(Resource):
     def post(self):
