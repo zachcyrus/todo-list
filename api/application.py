@@ -42,7 +42,7 @@ class New_Item(Resource):
     @app.doc(
         responses={200: "OK", 400: "Invalid Argument", 500: "Mapping Key Error"},
     )
-    @app.expect(item_model)
+    @app.expect(item_model, validate=True)
     def post(self):
         # Get item from the POST body
         req_data = request.get_json()
@@ -112,7 +112,7 @@ class Item_Status(Resource):
 @item_name_space.route("/update")
 class Update_Item(Resource):
     
-    @app.expect(item_with_status_model)
+    @app.expect(item_with_status_model, validate=True)
     def put(self):
         # Get item from the POST body
         req_data = request.get_json()
@@ -137,8 +137,10 @@ class Update_Item(Resource):
         return response
 
 
-@item_name_space.route("/remove", methods=["DELETE"])
+@item_name_space.route("/remove")
 class Remove_Item(Resource):
+
+    @app.expect(item_model, validate=True)
     def delete(self):
         # Get item from the POST body
         req_data = request.get_json()
