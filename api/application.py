@@ -4,37 +4,37 @@ from flask_restx import Api, Resource, fields
 
 import json
 
-flask_app = Flask(__name__)
-app = Api(app=flask_app, version="1.0", title="Todo API Example")
+
+application = Flask(__name__)
+app = Api(app=application, version="1.0", title="Todo API Example")
 
 item_name_space = app.namespace("items", description="Route endpoints for items")
 
 item_model = app.model(
-    "Item Model",
-    {
-        "item": fields.String(
-            required=True,
-            description="Name of the item/todo task",
-            help="Name cannot be blank.",
-        )
-    },
-)
-
+        "Item Model",
+        {
+            "item": fields.String(
+                required=True,
+                description="Name of the item/todo task",
+                help="Name cannot be blank.",
+            )
+        },
+    )
 item_with_status_model = app.model(
-    "Item w/ Status Model",
-    {
-        "item": fields.String(
-            required=True,
-            description="Name of the item/todo task",
-            help="Name cannot be blank.",
-        ),
-        "status": fields.String(
-            required=True,
-            description="Status of the item/todo task the only accepted values are: not started, in progress, and completed",
-            help="Status cannot be blank.",
-        )
-    },
-)
+        "Item w/ Status Model",
+        {
+            "item": fields.String(
+                required=True,
+                description="Name of the item/todo task",
+                help="Name cannot be blank.",
+            ),
+            "status": fields.String(
+                required=True,
+                description="Status of the item/todo task the only accepted values are: not started, in progress, and completed",
+                help="Status cannot be blank.",
+            )
+        },
+    )
 
 
 @item_name_space.route("/new")
@@ -42,7 +42,7 @@ class New_Item(Resource):
     @app.doc(
         responses={200: "OK", 400: "Invalid Argument", 500: "Mapping Key Error"},
     )
-    @app.expect(item_model)
+    @app.expect(item_model, validate=True)
     def post(self):
         # Get item from the POST body
         req_data = request.get_json()
@@ -112,7 +112,7 @@ class Item_Status(Resource):
 @item_name_space.route("/update")
 class Update_Item(Resource):
     
-    @app.expect(item_with_status_model)
+    @app.expect(item_with_status_model, validate=True)
     def put(self):
         # Get item from the POST body
         req_data = request.get_json()
@@ -137,8 +137,10 @@ class Update_Item(Resource):
         return response
 
 
-@item_name_space.route("/remove", methods=["DELETE"])
+@item_name_space.route("/remove")
 class Remove_Item(Resource):
+
+    @app.expect(item_model, validate=True)
     def delete(self):
         # Get item from the POST body
         req_data = request.get_json()
