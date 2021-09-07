@@ -1,7 +1,6 @@
-from . import helper
 from flask import Flask, request, Response
 from flask_restx import Api, Resource, fields
-
+import helper
 import json
 
 
@@ -162,3 +161,6 @@ class Remove_Item(Resource):
         response = Response(json.dumps(res_data), mimetype="application/json")
 
         return response
+
+if __name__ == '__main__':
+    application.run()
