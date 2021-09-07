@@ -4,7 +4,7 @@ attrs==21.2.0
 black==21.7b0
 click==8.0.1
 Flask==2.0.1
-flask-restplus==0.13.0
+flask-restx==0.5.0
 itsdangerous==2.0.1
 Jinja2==3.0.1
 jsonschema==3.2.0
