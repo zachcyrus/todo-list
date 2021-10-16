@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-deployment
+spec:
+  selector:
+    matchLabels:
+      app: flask-todo-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flask-todo-app
+    spec:
+      containers:  
+      - name: todo-container
+        image: zcyrus/todo-flask:latest
+        ports:
+          - containerPort: 5000
